@@ -377,7 +377,6 @@ export interface PredictionsState {
   intervalSeconds: number
   minBetAmount: string
   bufferSeconds: number
-  lastOraclePrice: string
   history: Bet[]
   totalHistory: number
   currentHistoryPage: number
