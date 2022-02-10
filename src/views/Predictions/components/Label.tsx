@@ -131,6 +131,10 @@ export const TimerLabel: React.FC<TimerLabelProps> = ({ interval, unit }) => {
   const countdown = formatRoundTime(secondsRemaining)
   const { t } = useTranslation()
 
+  if (!currentRoundLockTimestamp) {
+    return null
+  }
+
   return (
     <Box pr="24px" position="relative">
       <Label dir="right">
