@@ -1,7 +1,17 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist'
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+  createMigrate,
+} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import blockReducer from './block'
 import burn from './burn/reducer'
@@ -22,10 +32,25 @@ import user from './user/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions', 'lists', 'profile']
 
+const migrations = {
+  0: (state) => {
+    // migration add userPredictionChainlinkChartDisclaimerShow
+    return {
+      ...state,
+      user: {
+        ...state?.user,
+        userPredictionChainlinkChartDisclaimerShow: true,
+      },
+    }
+  },
+}
+
 const persistConfig = {
   key: 'primary',
   whitelist: PERSISTED_KEYS,
   storage,
+  version: 0,
+  migrate: createMigrate(migrations, { debug: false }),
 }
 
 const persistedReducer = persistReducer(
